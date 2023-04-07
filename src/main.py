@@ -227,19 +227,23 @@ class CthreeD(QDialog):
         if self.processedvoxel is not None:
             self.updateimg()
 
+    # def open_3dview(self):
+    #     self.volWindow.setWindowTitle('3D View')
+    #     self.volWindow.vol_show()
+    #     self.volWindow.show()
+
     def open_3dview(self):
-        self.volWindow.setWindowTitle('3D View')
-        self.volWindow.vol_show()
-        self.volWindow.show()
+        self.viewer = C3dView(self.dname)
+        self.viewer.show()
 
     def colormap_choice(self, text):
         self.colormap = self.colormapDict[text]
         self.updateimg()
 
     def dicom_clicked(self):
-        dname = QFileDialog.getExistingDirectory(self, 'choose dicom directory')
-        print(dname)
-        self.load_dicomfile(dname)
+        self.dname = QFileDialog.getExistingDirectory(self, 'choose dicom directory')
+        print(self.dname)
+        self.load_dicomfile(self.dname)
 
     def load_dicomfile(self, dname):
         self.dcmList.clear()
@@ -256,9 +260,9 @@ class CthreeD(QDialog):
 
         self.updateimg()
         self.set_directory()
-        self.volWindow = C3dView()
-        self.volWindow.imgs = imgs
-        self.volWindow.patient = patient
+        # self.volWindow = C3dView()
+        # self.volWindow.imgs = imgs
+        # self.volWindow.patient = patient
         self.dcmInfo, self.resolution = ldf.load_dcm_info(dname)
         self.updatelist()
 

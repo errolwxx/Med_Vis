@@ -10,7 +10,7 @@ def load_dcm_info(path):
     slice_for_info = pydicom.read_file(path + '/' + os.listdir(path)[0], force=True)
     ax_res = ('Axial Spacing', float(slice_for_info.SliceThickness))
     sag_res = ('Sagittal Spacing', float(slice_for_info.PixelSpacing[0]))
-    cor_res = ('Coronal Spacing', float(slice_for_info.PixelSpacing[0]))
+    cor_res = ('Coronal Spacing', float(slice_for_info.PixelSpacing[1]))
 
     try:
         name = ('Patient Name', str(slice_for_info.PatientName).split('  ', 1)[1])
@@ -120,7 +120,7 @@ def make_mesh(image, threshold=-300, step_size=10):
     p = image.transpose(2, 1, 0)
     print('Calculating surface')
     # verts是所有頂點，faces是所有三角形列表
-    verts, faces, norm, val = measure.marching_cubes_lewiner(p, threshold, spacing=(1, 1, 1),
+    verts, faces, norm, val = measure.marching_cubes(p, threshold, spacing=(1, 1, 1),
                                                              gradient_direction='descent', step_size=step_size,
-                                                             allow_degenerate=True)
+                                                             allow_degenerate=True, method='lewiner')
     return verts, faces
