@@ -1,7 +1,9 @@
-## How to use it?
-Project root will be **/src**, just clone it and run mainwindow.py.
-
-Strictly follow the package version in requirements.txt is not necessary.
+## How to use
+cd src, run main.py.
+- To measure electrodes length, click measure length button and click on the slice. Distance will be calculated when points number reaches 2.
+- Change the target slice by choosing from axial, sagittal, and coronal.
+- Click exit measure button to quit measuring mode.
+- ROI measure to be developed.
 
 ## Acknowledgments
 - [brain.png](https://github.com/wenyalintw/Dicom-Viewer/blob/master/resources/brain.png) licensed under "CC BY 3.0" downloaded from [ICONFINDER](https://www.iconfinder.com/icons/1609653/brain_organs_icon) 
