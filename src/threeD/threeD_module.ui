@@ -900,7 +900,7 @@ QComboBox::down-arrow {
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="loadnpyButton">
+      <widget class="QPushButton" name="ROIButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -911,7 +911,7 @@ QComboBox::down-arrow {
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>Load .npy</string>
+        <string>Measure ROI</string>
        </property>
       </widget>
      </item>

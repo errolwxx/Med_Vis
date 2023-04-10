@@ -87,8 +87,10 @@ def get_pixels_hu(scans):
     image[image == -2000] = 0
 
     # Convert to Hounsfield units (HU)
-    intercept = scans[0].RescaleIntercept
-    slope = scans[0].RescaleSlope
+    try:
+        intercept = scans[0].RescaleIntercept
+        slope = scans[0].RescaleSlope
+    except: intercept, slope = 0.0, 1.0
 
     if slope != 1:
         image = slope * image.astype(np.float64)

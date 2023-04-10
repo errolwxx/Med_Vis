@@ -31,7 +31,6 @@ class CthreeD(QDialog):
         self.coronal_hSlider.valueChanged.connect(self.updateimg)
         self.coronal_vSlider.valueChanged.connect(self.updateimg)
         self.colormap = None
-        # 這樣可以把"被activate"的Item轉成str傳入connect的function（也可以用int之類的，會被enum）
         self.colormapBox.activated[str].connect(self.colormap_choice)
         self.colormapDict = {'GRAY': None,
                              'AUTUMN': cv2.COLORMAP_AUTUMN,
@@ -97,57 +96,51 @@ class CthreeD(QDialog):
 
         self.cross_recalc = True
         # self.savenpyButton.clicked.connect(self.save_npy_clicked)
-        self.loadnpyButton.clicked.connect(self.load_npy_clicked)
+        # self.loadnpyButton.clicked.connect(self.load_npy_clicked)
         # self.downscaled = 2
         # self.dsampleButton.clicked.connect(self.downsample)
         self.exitButton.clicked.connect(self.exit_measure)
         self.distButton.clicked.connect(self.press_dist)
-
-        self.original_mousePressEvent1 = self.imgLabel_1.mousePressEvent
-        self.original_mousePressEvent2 = self.imgLabel_2.mousePressEvent
-        self.original_mousePressEvent3 = self.imgLabel_3.mousePressEvent
-
-        self.original_paintEvent1 = self.imgLabel_1.paintEvent
-        self.original_paintEvent2 = self.imgLabel_2.paintEvent
-        self.original_paintEvent3 = self.imgLabel_3.paintEvent
+        self.ROIButton.clicked.connect(self.press_ROI)
 
     def press_dist(self):
         if self.oriBox.currentText() == 'Axial':
-            self.imgLabel_1.mousePressEvent = self.imgLabel_1.m_mousePressEvent
-            self.imgLabel_1.paintEvent = self.imgLabel_1.m_paintEvent
+            self.imgLabel_1.paintMode = "m_length"
             self.imgLabel_1.resolution = self.resolution[:2]
         elif self.oriBox.currentText() == 'Saggital':
-            self.imgLabel_2.mousePressEvent = self.imgLabel_2.m_mousePressEvent
-            self.imgLabel_2.paintEvent = self.imgLabel_2.m_paintEvent
-            self.imgLabel_2.resolution = self.resolution [1:]
+            self.imgLabel_2.paintMode = "m_length"
+            self.imgLabel_2.resolution = self.resolution[1:]
         elif self.oriBox.currentText() == 'Coronal':
-            self.imgLabel_3.mousePressEvent = self.imgLabel_3.m_mousePressEvent
-            self.imgLabel_3.paintEvent = self.imgLabel_3.m_paintEvent
+            self.imgLabel_3.paintMode = "m_length"
+            self.imgLabel_3.resolution = [self.resolution[0], self.resolution[2]]
+        else:
+            pass
+
+    def press_ROI(self):
+        if self.oriBox.currentText() == 'Axial':
+            self.imgLabel_1.paintMode = "m_ROI"
+            self.imgLabel_1.resolution = self.resolution[:2]
+        elif self.oriBox.currentText() == 'Saggital':
+            self.imgLabel_2.paintMode = "m_ROI"
+            self.imgLabel_2.resolution = self.resolution[1:]
+        elif self.oriBox.currentText() == 'Coronal':
+            self.imgLabel_3.paintMode = "m_ROI"
             self.imgLabel_3.resolution = [self.resolution[0], self.resolution[2]]
         else:
             pass
 
     def exit_measure(self):
         if self.oriBox.currentText() == 'Axial':
-            self.imgLabel_1.mousePressEvent = self.original_mousePressEvent1
-            self.imgLabel_1.paintEvent = self.original_paintEvent1
+            self.imgLabel_1.paintMode = "normal"
             self.imgLabel_1.points = QPolygon()
         elif self.oriBox.currentText() == 'Saggital':
-            self.imgLabel_2.mousePressEvent = self.original_mousePressEvent2
-            self.imgLabel_2.paintEvent = self.original_paintEvent2
+            self.imgLabel_2.paintMode = "normal"
             self.imgLabel_2.points = QPolygon()
         elif self.oriBox.currentText() == 'Coronal':
-            self.imgLabel_3.mousePressEvent = self.original_mousePressEvent3
-            self.imgLabel_3.paintEvent = self.original_paintEvent3
+            self.imgLabel_3.paintMode = "normal"
             self.imgLabel_3.points = QPolygon()
         else:
             pass
-
-    # def measure_dist(self, event):
-    #     self.points << event.pos()
-    #     self.update()
-    # def vis_dist(self, event):
-    #     super().paintEvent(event)
         
     def downsample(self):
         self.processedvoxel = self.processedvoxel[::self.downscaled, ::self.downscaled, ::self.downscaled]
@@ -283,7 +276,6 @@ class CthreeD(QDialog):
 
     def updatelist(self):
         for item in self.dcmInfo:
-            # 單純字串的話，可以不需要QListWidgetItem包裝也沒關係
             self.dcmList.addItem(QListWidgetItem('%-20s\t:  %s' % (item[0], item[1])))
 
     def updateimg(self):
