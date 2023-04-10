@@ -7,4 +7,6 @@ cd src, run main.py.
 - Volume rendering
   - Click Open 3D button.
   - Further interactables in popped window.
-- ROI measure to be developed.
+- ROI measure
+  - Click measure ROI button and draw on the slice by pressing and dragging the mouse. Area will be calculated when the mouse is released.
+  - Rest are the same as length measuring.
