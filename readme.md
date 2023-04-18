@@ -1,3 +1,12 @@
+## Requirements
+- Python == 3.8.13
+- vtk == 9.0.3
+- PyQt5 == 5.15.2
+- Pydicom == 2.3.1
+- opencv-python == 4.7.0.72
+- NumPy == 1.24.2
+- Shapely == 2.0.1
+
 ## How to use
 cd src, run main.py.
 - Measure length
